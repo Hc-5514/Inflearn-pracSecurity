@@ -9,21 +9,27 @@ server:
 
 spring:
   datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/prac_security?serverTimezone=Asia/Seoul
+    url: jdbc:mariadb://localhost:3306/prac_security?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
     username: Hc-5514
     password: 5514
-
-# ???? ?? ?? ??
-#  mvc:
-#    view:
-#      prefix: /templates/
-#      suffix: .mustache
+    driver-class-name: org.mariadb.jdbc.Driver
 
   jpa:
     hibernate:
-      ddl-auto: create #create update none
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: update
     show-sql: true
-    database-platform: org.hibernate.dialect.MariaDB103Dialect
+
+#spring:
+#  datasource:
+#    driver-class-name: org.mariadb.jdbc.Driver
+#    url: jdbc:mariadb://localhost:3306/prac_security?serverTimezone=Asia/Seoul
+#    username: Hc-5514
+#    password: 5514
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: create #create update none
+#      naming:
+#        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+#    show-sql: true
+#    database-platform: org.hibernate.dialect.MariaDB103Dialect
