@@ -22,6 +22,7 @@ public class JwtPrincipalDetailsService  implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		JwtUser userEntity = userRepository.findByUsername(username);
+		System.out.println("userEntity: " + userEntity);
 		return new JwtPrincipalDetails(userEntity);
 	}
 }

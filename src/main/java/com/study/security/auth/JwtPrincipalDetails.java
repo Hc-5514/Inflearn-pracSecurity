@@ -8,6 +8,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.study.security.model.JwtUser;
 
+import lombok.Getter;
+
+@Getter
 public class JwtPrincipalDetails implements UserDetails {
 
 	private JwtUser user;

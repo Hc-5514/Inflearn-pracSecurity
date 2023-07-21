@@ -13,8 +13,10 @@ import org.springframework.security.web.context.SecurityContextPersistenceFilter
 import org.springframework.web.filter.CorsFilter;
 
 import com.study.security.config.jwt.JwtAuthenticationFilter;
+import com.study.security.config.jwt.JwtAuthorizationFilter;
 import com.study.security.filter.MyFilter1;
 import com.study.security.filter.MyFilter3;
+import com.study.security.repository.JwtUserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,16 +28,11 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private final CorsFilter corsFilter;
-
-	// 해당 메서드의 리턴되는 오브젝트를 IoC로 등록해준다.
-	@Bean
-	public BCryptPasswordEncoder encodePwd() {
-		return new BCryptPasswordEncoder();
-	}
+	private final JwtUserRepository userRepository;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.addFilterBefore(new MyFilter3(), SecurityContextPersistenceFilter.class); // security filter chain 에 직접 걸 필요 없이 filter 클래스로 별도 관리를 할 수 있다. 오른쪽 필터보다 먼저 실행. 3,1,2 실행
+		// http.addFilterBefore(new MyFilter3(), SecurityContextPersistenceFilter.class); // security filter chain 에 직접 걸 필요 없이 filter 클래스로 별도 관리를 할 수 있다. 오른쪽 필터보다 먼저 실행. 3,1,2 실행
 		http.csrf().disable();
 		/**
 		 * jwt 사용 전 security 설정
@@ -62,8 +59,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.formLogin().disable()	// form 로그인 사용 x
 			.httpBasic().disable()	// 기본적인 http 방식 사용 x
 			.addFilter(new JwtAuthenticationFilter(authenticationManager())) // AuthenticationManager
+			.addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository)) // AuthorizationFilter
 			.authorizeRequests()
-			.antMatchers("/api/vi/user/**")
+			.antMatchers("/api/v1/user/**")
 			.access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
 			.antMatchers("/api/v1/manager/**")
 			.access("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
